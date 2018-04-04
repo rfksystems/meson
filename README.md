@@ -1,5 +1,5 @@
 # Meson
-### Distributed identity inspired by BSON's ObjectID and Snowflake
+### Distributed ID generator inspired by BSON's ObjectID and Snowflake
 
 > In particle physics, mesons (/ˈmiːzɒnz/ or /ˈmɛzɒnz/) are hadronic subatomic particles composed of one quark and one antiquark, bound together by strong interactions. - [Wikipedia](https://en.wikipedia.org/wiki/Meson)
 
