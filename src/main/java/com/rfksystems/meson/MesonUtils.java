@@ -1,3 +1,18 @@
+/*
+ * Copyright 2018 RFK Systems
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package com.rfksystems.meson;
 
 class MesonUtils {
@@ -26,7 +41,7 @@ class MesonUtils {
             throw new IllegalArgumentException("Hex string needs to be even-length: " + hexString);
         }
 
-        final byte[] buffer = new byte[Meson.BUFFER_SIZE];
+        final byte[] buffer = new byte[Meson.BUFFER_SIZE_BYTES];
 
         for (int i = 0; i < buffer.length; i++) {
             buffer[i] = (byte) Integer.parseInt(hexString.substring(i * 2, i * 2 + 2), 16);
@@ -68,7 +83,7 @@ class MesonUtils {
         };
     }
 
-    public static long longFromUInt48(byte[] bytes, final int offset) {
+    static long longFromUInt48(byte[] bytes, final int offset) {
         return ((bytes[offset] & 0xFFL) << 40
                 | (bytes[offset + 1] & 0xFFL) << 32
                 | (bytes[offset + 2] & 0xFFL) << 24
@@ -77,7 +92,7 @@ class MesonUtils {
                 | (bytes[offset + 5] & 0xFFL));
     }
 
-    public static int intFromBytes(byte[] bytes, final int offset) {
+    static int intFromBytes(byte[] bytes, final int offset) {
         return ((bytes[offset] & 0xFF) << 24
                 | (bytes[offset + 1] & 0xFF) << 16
                 | (bytes[offset + 2] & 0xFF) << 8

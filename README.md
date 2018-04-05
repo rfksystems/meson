@@ -57,7 +57,7 @@ Meson is available in Maven Central. Adding dependency definition to your build 
 #### Gradle
 
 ```groovy
-    compile group: 'com.rfksystems', name: 'meson', version: 'VERSION'
+compile group: 'com.rfksystems', name: 'meson', version: 'VERSION'
 ```
 
 ### Usage
