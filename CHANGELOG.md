@@ -1,3 +1,7 @@
+### 1.0.2
+
+1. Allow creation of Meson identity for specific time.
+
 ### 1.0.1 
 
 1. Comment the public API;

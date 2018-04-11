@@ -92,6 +92,20 @@ public class Meson implements Serializable, Comparable<Meson> {
     }
 
     /**
+     * Create a new Meson identity for given time, with current machine identity and current sequence.
+     */
+    public Meson(final long time) {
+        if (time > MAX_TIME || time < MIN_TIME) {
+            throw new IllegalArgumentException(String.format(
+                    "Time must be between MIN_TIME %d and MAX_TIME %d", MIN_TIME, MAX_TIME));
+        }
+
+        this.time = time;
+        this.sequence = getSequenceAndIncrement();
+        this.generatorId = MesonGeneratorIdentity.get();
+    }
+
+    /**
      * Create instance of Meson identity for known time, generator identity and sequence id
      *
      * @param time        UNIX timestamp in milliseconds since epoch start, with minimum value of {@link Meson#MIN_TIME} and
