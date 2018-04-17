@@ -173,6 +173,42 @@ public class MesonTest {
         assertWithMessage("Ratio of runs should be less than 2x").that(runRatio).isLessThan(2.0);
     }
 
+    @Test
+    public void test_that_it_sorts_properly() throws Exception {
+        final String[] expectedOrder = {
+                "0162915be2da900035c91a2a5d29",
+                "0162915be2e1900035c91a2a5d33",
+                "0162915be2e1900035c91a2a5d34",
+                "0162915be2e1900035c91a2a5d35",
+                "0162915be2e1900035c91a2a5d36",
+                "0162915be2e1900035c91a2a5d37",
+                "0162915be2e1900035c91a2a5d38",
+                "0162915be2e1900035c91a2a5d39",
+                "0162915be2e1900035c91a2a5d3a",
+                "0162915be2e1900035c91a2a5d3b",
+                "0162915be2e1900035c91a2a5d3c",
+        };
+
+        final ArrayList<Meson> mesons = new ArrayList<>();
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d36"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d37"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d38"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d39"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d3a"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d33"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d34"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d35"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d3b"));
+        mesons.add(new Meson("0162915be2e1900035c91a2a5d3c"));
+        mesons.add(new Meson("0162915be2da900035c91a2a5d29"));
+
+        mesons.sort(Meson::compareTo);
+
+        for (int i = 0; i < mesons.size(); i++) {
+            assertThat(mesons.get(i).toHexString()).isEqualTo(expectedOrder[i]);
+        }
+    }
+
     private void assertCommon(final Meson meson) {
         assertThat(meson.toFormatString()).isEqualTo("000000000064-01020304-000000c8");
         assertThat(meson.toHexString()).isEqualTo("00000000006401020304000000c8");
