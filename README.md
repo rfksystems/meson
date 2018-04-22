@@ -6,6 +6,7 @@
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.rfksystems/meson.svg?style=flat-square)](http://mvnrepository.com/artifact/com.rfksystems/meson)
 
+**Reference implementation in Java.**
 API documentation is available [here](http://www.javadoc.io/doc/com.rfksystems/meson/)
 
 ### ID composition:
