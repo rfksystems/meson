@@ -15,6 +15,8 @@
 
 package com.rfksystems.meson;
 
+import java.util.Arrays;
+
 class MesonUtils {
     private static final char[] HEX_DICT = new char[]{
             '0', '1', '2', '3',
@@ -23,7 +25,44 @@ class MesonUtils {
             'c', 'd', 'e', 'f'
     };
 
-    static String bytesToHex(byte[] bytes) {
+    private static final byte[] HEX_DEDICT = new byte[]{
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0x0, 0x1, 0x2, 0x3,
+            0x4, 0x5, 0x6, 0x7,
+            0x8, 0x9,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff,
+            0xa, 0xb, 0xc, 0xd,
+            0xe, 0xf,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff,
+            0xffffffff
+    };
+
+    static String bytesToHex(final byte[] bytes) {
         final char[] hexChars = new char[bytes.length * 2];
 
         for (int j = 0; j < bytes.length; j++) {
@@ -36,15 +75,17 @@ class MesonUtils {
         return new String(hexChars);
     }
 
-    static byte[] hexToBytes(final String hexString) {
-        if (0 != hexString.length() % 2) {
-            throw new IllegalArgumentException("Hex string needs to be even-length: " + hexString);
+    static byte[] hexToBytes(final CharSequence chars) {
+        final int length = chars.length();
+        if (0 != length % 2) {
+            throw new IllegalArgumentException("Hex string needs to be even-length: " + chars);
         }
 
-        final byte[] buffer = new byte[Meson.BUFFER_SIZE_BYTES];
+        final byte[] buffer = new byte[length / 2];
 
-        for (int i = 0; i < buffer.length; i++) {
-            buffer[i] = (byte) Integer.parseInt(hexString.substring(i * 2, i * 2 + 2), 16);
+        int jj = 0;
+        for (int i = 0; i < length; i += 2) {
+            buffer[jj++] = (byte) (HEX_DEDICT[chars.charAt(i)] << 4 | HEX_DEDICT[chars.charAt(i + 1)]);
         }
 
         return buffer;

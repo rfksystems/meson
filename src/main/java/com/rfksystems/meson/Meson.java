@@ -126,7 +126,9 @@ public class Meson implements Serializable, Comparable<Meson> {
      * @param string String representation of Meson identity, compact or formatted.
      */
     public Meson(final String string) {
-        final String hexString = -1 == string.indexOf('-') ? string : string.replaceAll("-", "");
+        final String hexString = -1 == string.indexOf('-')
+                ? string.toLowerCase()
+                : string.replaceAll("-", "").toLowerCase();
 
         if (28 != hexString.length()) {
             throw new IllegalArgumentException();
@@ -177,6 +179,51 @@ public class Meson implements Serializable, Comparable<Meson> {
 
         this.sequence = intFromBytes(bytes, 10);
         validate();
+    }
+
+    /**
+     * Check if given string could represent a Meson id.
+     *
+     * @param string string to check.
+     * @return Whether or not the given string could represent a Meson id.
+     */
+    public static boolean isValidHexString(final String string) {
+        if (null == string) {
+            return false;
+        }
+
+        final int hexLength = string.length();
+
+        if (string.isEmpty() || (hexLength != 28 && hexLength != 30)) {
+            return false;
+        }
+
+        final String hexString = -1 == string.indexOf('-')
+                ? string.toLowerCase()
+                : string.replaceAll("-", "").toLowerCase();
+
+        if (28 != hexString.length()) {
+            return false;
+        }
+
+        final byte[] bytes = hexToBytes(hexString);
+
+        if (bytes.length != BUFFER_SIZE_BYTES) {
+            return false;
+        }
+
+        final long time = longFromUInt48(bytes, 0);
+
+        if (time > MAX_TIME || time < MIN_TIME) {
+            throw new IllegalArgumentException(String.format(
+                    "Time must be between MIN_TIME %d and MAX_TIME %d",
+                    MIN_TIME,
+                    MAX_TIME
+            ));
+        }
+
+        final int sequence = intFromBytes(bytes, 10);
+        return 0 <= sequence;
     }
 
     /**
@@ -254,6 +301,7 @@ public class Meson implements Serializable, Comparable<Meson> {
         final byte[] counterInt32 = intToBytes(sequence);
 
         final byte[] id = new byte[BUFFER_SIZE_BYTES];
+
         id[0] = timestampUInt48[0];
         id[1] = timestampUInt48[1];
         id[2] = timestampUInt48[2];

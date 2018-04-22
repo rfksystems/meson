@@ -209,6 +209,55 @@ public class MesonTest {
         }
     }
 
+    @Test
+    public void test_that_validator_returns_true_on_valid_hex_strings() {
+        final String[] samples = {
+                "000000000000-00000000-00000000",
+                "0162915BE2DA900035C91A2A5D29",
+                "0162915be2da900035c91a2a5d29",
+                "0162915be2e1900035c91a2a5d33",
+                "0162915be2e1900035c91a2a5d34",
+                "0162915be2e1900035c91a2a5d35",
+                "0162915be2e1900035c91a2a5d36",
+                "0162915be2e1900035c91a2a5d37",
+                "0162915be2e1900035c91a2a5d38",
+                "0162915be2e1900035c91a2a5d39",
+                "0162915be2e1900035c91a2a5d3a",
+                "0162915be2e1900035c91a2a5d3b",
+                "0162915be2e1900035c91a2a5d3c",
+                "0162915BE2DA-900035C9-1A2A5D29",
+                "0162915be2da-900035c9-1a2a5d29",
+                "0162915be2e1-900035c9-1a2a5d33",
+                "0162915be2e1-900035c9-1a2a5d34",
+                "0162915be2e1-900035c9-1a2a5d35",
+                "0162915be2e1-900035c9-1a2a5d36",
+                "0162915be2e1-900035c9-1a2a5d37",
+                "0162915be2e1-900035c9-1a2a5d38",
+                "0162915be2e1-900035c9-1a2a5d39",
+                "0162915be2e1-900035c9-1a2a5d3a",
+                "0162915be2e1-900035c9-1a2a5d3b",
+                "0162915be2e1-900035c9-1a2a5d3c",
+        };
+
+        for (final String sample : samples) {
+            assertThat(Meson.isValidHexString(sample)).isTrue();
+        }
+    }
+    @Test
+    public void test_that_validator_returns_false_on_invalid_hex_strings() {
+        final String[] samples = {
+                null,
+                "1",
+                "0162915be2da900035c91a2a5d293",
+                "0162915be2da2-900035c9-1a2a5d29",
+                "eeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        };
+
+        for (final String sample : samples) {
+            assertThat(Meson.isValidHexString(sample)).isFalse();
+        }
+    }
+
     private void assertCommon(final Meson meson) {
         assertThat(meson.toFormatString()).isEqualTo("000000000064-01020304-000000c8");
         assertThat(meson.toHexString()).isEqualTo("00000000006401020304000000c8");
