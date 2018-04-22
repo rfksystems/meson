@@ -20,9 +20,9 @@ Total 112 bits, or 14 bytes, or, 28 or 30 characters long, depending on the form
 
 ### Implementation details
 
-1. Timestamps are expressed as 48 bit unsigned integers with max. value of `281474976710655`. This is well beyond what would in theory be required to store timestamps. In fact, the topmost timestamp you could store in a 48 bit int is August 2nd year 10889.
-2. Timestamps have millisecond precession and all the identifier is Big-Endian exclusively. This makes Meson naturally sortable by time and in sequence within the same instance. Sorting order beyond millis for ID's generated in different instances is not defined, yet given the millisecond precession, it should not a be a problem.
-3. Generator identifier is a CRC32 of parts defined, and makes a collision between hosts of the same ORG pretty near improbable:
+1. Timestamps are expressed as 48 bit unsigned integers with max. value of `281474976710655`. This is well beyond what would ordinarily be needed to store timestamps. The topmost timestamp you could store in a 48 bit int is August 2nd year 10889.
+2. Timestamps have millisecond precession and the identifier uses Big-Endian byte order. This makes Meson naturally sortable by time and in sequence within the same instance. Sorting order beyond millis for ID's generated in different instances is not a defined behavior, however, given the millisecond precession of the timestamps, this should almost never present a real problem.
+3. Generator identifier is a CRC32 of parts defined bellow, and makes a collision between hosts of the same ORG pretty near improbable:
     - `/proc/1/cgroup` contents if the file is present
     - Hostname of the "127.0.0.1" address
     - Process ID (PID)
@@ -64,19 +64,16 @@ compile group: 'com.rfksystems', name: 'meson', version: 'VERSION'
 
 Either create new instance of `com.rfksystems.meson.Meson` with appropriate or no parameters, or call one of
 `com.rfksystems.meson.Meson#directTo*` methods to create a Meson identifier directly without creating
-a Meson object. See [API documentation](http://www.javadoc.io/doc/com.rfksystems/meson/) for more of what methods are available.
+a Meson object. See [API documentation](http://www.javadoc.io/doc/com.rfksystems/meson/) for more on what methods are available.
 
 ### Performance
 
-... is not the main goal of the project, but as it stands, Meson is on par or quicker with BSON's ObjectID
-in the limited number of tests I have performed. 
-
-On my modest Core i5 Skylake laptop, Meson is able to generate 100m ID's on single thread in under 3 seconds -
-exactly on par with BSON's ObjectId.
+Meson is on par or quicker than BSON's ObjectID in the limited number of tests I have performed. You should be comfortably
+able to generate 10s or even 100s of millions of id's on modest server hardware, per second, per core.
 
 ### Sample ID's
 
-This should give a nice example on how the hex formatted Meson ID's look like.
+This should give an example on how the hex formatted Meson ID's look like.
 
 #### Compact HEX string (prefered format)
 
